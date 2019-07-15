@@ -14,10 +14,13 @@ public class CurrentPerformanceRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public void manageCurrentPerformance(PlayerPerformance playerPerformance){
-        Query query = Query.query(Criteria.where("summonerId").is(playerPerformance.getSummonerId()));
+    public void manageCurrentPerformance(PlayerPerformance[] playerPerformances){
+        for(int i=0; i<playerPerformances.length; i++)
+        {
+            Query query = Query.query(Criteria.where("summonerId").is(playerPerformances[i].getSummonerId()));
+        }
 
-        mongoTemplate.insert(playerPerformance);
+        mongoTemplate.insert(playerPerformances);
 
     }
 
