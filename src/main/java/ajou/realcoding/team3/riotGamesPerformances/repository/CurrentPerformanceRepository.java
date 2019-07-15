@@ -20,4 +20,9 @@ public class CurrentPerformanceRepository {
         mongoTemplate.insert(playerPerformance);
 
     }
+
+    public PlayerPerformance findCurrentPerformance(String encryptedSummonerId) {
+        Query query = Query.query(Criteria.where("summonerId").is(encryptedSummonerId));
+        return mongoTemplate.findOne(query, PlayerPerformance.class);
+    }
 }
