@@ -7,6 +7,8 @@ import ajou.realcoding.team3.riotGamesPerformances.repository.CurrentPerformance
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GameService {
     @Autowired
@@ -18,8 +20,9 @@ public class GameService {
         return riotGamesPerformancesAPIClient.requestEncryptedID(summonerName);
     }
 
-    public PlayerPerformance getPerformanceByEncryptedSummonerID(String encryptedSummonerId) {
-        currentPerformanceRepository.manageCurrentPerformance(riotGamesPerformancesAPIClient.requestPerformance(encryptedSummonerId));
-        return currentPerformanceRepository.findCurrentPerformance(encryptedSummonerId);
+    public PlayerPerformance[] getPerformanceByEncryptedSummonerID(String encryptedSummonerId) {
+        PlayerPerformance[] playerPerformances = riotGamesPerformancesAPIClient.requestPerformance(encryptedSummonerId);
+        currentPerformanceRepository.manageCurrentPerformance(playerPerformances);
+        return currentPerformanceRepository.findCurrentPerformance(encryptedSummonerId, playerPerformances);
     }
 }
