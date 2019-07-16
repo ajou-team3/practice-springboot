@@ -13,7 +13,7 @@ public class PerformanceController {
     GameService gameService;
 
     @GetMapping("/lol/summoner/get-player-performance/by-name")
-    public PlayerPerformance getPlayerPerformance(@RequestParam String summonerName){
+    public PlayerPerformance[] getPlayerPerformance(@RequestParam String summonerName){
         String encryptedID = gameService.getEncryptedIdBySummonerName(summonerName).getId();
         return gameService.getPerformanceByEncryptedSummonerID(encryptedID);
     }
