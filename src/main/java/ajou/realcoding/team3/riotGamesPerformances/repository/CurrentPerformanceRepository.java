@@ -14,18 +14,21 @@ public class CurrentPerformanceRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public void manageCurrentPerformance(PlayerPerformance[] playerPerformances){
-        for(int i=0; i<playerPerformances.length; i++)
-        {
+    public void manageCurrentPerformance(PlayerPerformance[] playerPerformances) {
+        for (int i = 0; i < playerPerformances.length; i++) {
             Query query = Query.query(Criteria.where("summonerId").is(playerPerformances[i].getSummonerId()));
+            mongoTemplate.insert(playerPerformances[i]);
         }
-
-        mongoTemplate.insert(playerPerformances);
 
     }
 
-    public PlayerPerformance findCurrentPerformance(String encryptedSummonerId) {
-        Query query = Query.query(Criteria.where("summonerId").is(encryptedSummonerId));
-        return mongoTemplate.findOne(query, PlayerPerformance.class);
+    public PlayerPerformance[] findCurrentPerformance(String encryptedSummonerId, PlayerPerformance[] playerPerformances) {
+        PlayerPerformance[] result = playerPerformances;
+        int cnt = 0;
+        for(int i=0; i<playerPerformances.length; i++) {
+            Query query = Query.query(Criteria.where("summonerId").is(playerPerformances[i].getSummonerId()));
+            result[cnt] = mongoTemplate.findOne(query, PlayerPerformance.class);
+        }
+        return result;
     }
 }
