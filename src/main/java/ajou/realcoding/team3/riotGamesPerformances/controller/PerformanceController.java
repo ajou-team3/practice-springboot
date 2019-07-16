@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class PerformanceController {
     @Autowired
     GameService gameService;
 
     @GetMapping("/lol/summoner/get-player-performance/by-name")
-    public PlayerPerformance getPlayerPerformance(@RequestParam String summonerName){
+    public List<PlayerPerformance> getPlayerPerformance(@RequestParam String summonerName){
         String encryptedID = gameService.getEncryptedIdBySummonerName(summonerName).getId();
         return gameService.getPerformanceByEncryptedSummonerID(encryptedID);
     }
