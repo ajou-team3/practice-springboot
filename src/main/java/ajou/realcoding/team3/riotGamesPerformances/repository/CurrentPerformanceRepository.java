@@ -23,12 +23,11 @@ public class CurrentPerformanceRepository {
     }
 
     public PlayerPerformance[] findCurrentPerformance(String encryptedSummonerId, PlayerPerformance[] playerPerformances) {
-        PlayerPerformance[] result = playerPerformances;
-        int cnt = 0;
+        int queueTypeCount = 0;
         for(int i=0; i<playerPerformances.length; i++) {
             Query query = Query.query(Criteria.where("summonerId").is(playerPerformances[i].getSummonerId()));
-            result[cnt] = mongoTemplate.findOne(query, PlayerPerformance.class);
+            playerPerformances[queueTypeCount] = mongoTemplate.findOne(query, PlayerPerformance.class);
         }
-        return result;
+        return playerPerformances;
     }
 }
