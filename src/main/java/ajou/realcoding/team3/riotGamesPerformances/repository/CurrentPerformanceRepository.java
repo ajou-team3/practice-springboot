@@ -21,23 +21,28 @@ public class CurrentPerformanceRepository {
             Query query = Query.query(Criteria.where("summonerId").is(playerPerformance.getSummonerId()));
             query.addCriteria(Criteria.where("queueType").is(playerPerformance.getQueueType()));
             if(mongoTemplate.exists(query, PlayerPerformance.class)){
-                Update update = new Update();
-                update.set("hotStreak", playerPerformance.isHotStreak());
-                update.set("MiniSeriesDTO", playerPerformance.getMiniSeries());
-                update.set("wins", playerPerformance.getWins());
-                update.set("veteran", playerPerformance.isVeteran());
-                update.set("losses", playerPerformance.getLosses());
-                update.set("rank", playerPerformance.getRank());
-                update.set("leagueId", playerPerformance.getLeagueId());
-                update.set("inactive", playerPerformance.isInactive());
-                update.set("freshBlood", playerPerformance.isFreshBlood());
-                update.set("tier", playerPerformance.getTier());
-                update.set("leaguePoints", playerPerformance.getLeaguePoints());
+                Update update = updatePlayerPerformanceField(playerPerformance);
                 mongoTemplate.updateFirst(query, update, "playerPerformance");
             } else {
                 mongoTemplate.insert(playerPerformance);
             }
         }
+    }
+
+    private Update updatePlayerPerformanceField(PlayerPerformance playerPerformance) {
+        Update update = new Update();
+        update.set("hotStreak", playerPerformance.isHotStreak());
+        update.set("MiniSeriesDTO", playerPerformance.getMiniSeries());
+        update.set("wins", playerPerformance.getWins());
+        update.set("veteran", playerPerformance.isVeteran());
+        update.set("losses", playerPerformance.getLosses());
+        update.set("rank", playerPerformance.getRank());
+        update.set("leagueId", playerPerformance.getLeagueId());
+        update.set("inactive", playerPerformance.isInactive());
+        update.set("freshBlood", playerPerformance.isFreshBlood());
+        update.set("tier", playerPerformance.getTier());
+        update.set("leaguePoints", playerPerformance.getLeaguePoints());
+        return update;
     }
 
     public List<PlayerPerformance> findCurrentPerformance(String encryptedSummonerId) {
